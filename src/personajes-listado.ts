@@ -39,7 +39,9 @@ const crearContenedorPersonaje = (personaje: Personaje): HTMLDivElement => {
 };
 
 const pintarPersonajes = async () => {
-  const personajes = await obtenerPersonajes();
+  const inputForm = document.querySelector('#nombre') as HTMLInputElement;
+  const nombreAFiltrar = inputForm.value.toLowerCase();
+  const personajes = await obtenerPersonajes(nombreAFiltrar);
   const listadoPersonajesContainer = document.querySelector('#listado-personajes-container');
 
   if (listadoPersonajesContainer && listadoPersonajesContainer instanceof HTMLDivElement) {
@@ -61,15 +63,12 @@ const filtrarPersonaje = async () => {
     listadoPersonajesContainer &&
     listadoPersonajesContainer instanceof HTMLDivElement
   ) {
-    const personajes = await obtenerPersonajes();
     const nombreAFiltrar = inputForm.value.toLowerCase();
+    const personajes = await obtenerPersonajes(nombreAFiltrar);
     listadoPersonajesContainer.innerHTML = '';
     personajes.forEach((personaje) => {
-      const nombrePersonaje = personaje.nombre.toLowerCase();
-      if (nombrePersonaje.includes(nombreAFiltrar)) {
-        const personajeContainer = crearContenedorPersonaje(personaje);
-        listadoPersonajesContainer.appendChild(personajeContainer);
-      }
+      const personajeContainer = crearContenedorPersonaje(personaje);
+      listadoPersonajesContainer.appendChild(personajeContainer);
     });
   } else {
     throw new Error('No se ha encontrado el contenedor del listado de personajes');
