@@ -1,5 +1,5 @@
 import { Personaje } from './personajes-listado.modelo';
-import { obtenerPersonajes } from './personajes-listado.api';
+import { obtenerPersonajes, obtenerPersonajesFiltradosPorNombre } from './personajes-listado.api';
 
 const crearElementoImagen = (personaje: string, nombre: string): HTMLImageElement => {
   const imagen = document.createElement('img');
@@ -39,9 +39,7 @@ const crearContenedorPersonaje = (personaje: Personaje): HTMLDivElement => {
 };
 
 const pintarPersonajes = async () => {
-  const inputForm = document.querySelector('#nombre') as HTMLInputElement;
-  const nombreAFiltrar = inputForm.value.toLowerCase();
-  const personajes = await obtenerPersonajes(nombreAFiltrar);
+  const personajes = await obtenerPersonajes();
   const listadoPersonajesContainer = document.querySelector('#listado-personajes-container');
 
   if (listadoPersonajesContainer && listadoPersonajesContainer instanceof HTMLDivElement) {
@@ -64,7 +62,7 @@ const filtrarPersonaje = async () => {
     listadoPersonajesContainer instanceof HTMLDivElement
   ) {
     const nombreAFiltrar = inputForm.value.toLowerCase();
-    const personajes = await obtenerPersonajes(nombreAFiltrar);
+    const personajes = await obtenerPersonajesFiltradosPorNombre(nombreAFiltrar);
     listadoPersonajesContainer.innerHTML = '';
     personajes.forEach((personaje) => {
       const personajeContainer = crearContenedorPersonaje(personaje);
